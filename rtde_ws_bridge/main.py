@@ -92,16 +92,13 @@ async def control_loop_main(robot_host, robot_port, config_file, output_queue):
     con.send_output_setup(state_names, state_types)
     setp = con.send_input_setup(setp_names, setp_types)
 
-    list_to_setp(setp, [0]*6)  # Initialize setp registers to zero
-    # for i in range(6):
-    #     setattr(setp, f"input_double_register_{i}", 0)
+    list_to_setp(setp, [0,0,0,0,0,0])  
 
     if not con.send_start():
         logging.error("Failed to start RTDE synchronization.")
         return
 
     loop = asyncio.get_running_loop()
-
     while True:
         state = await loop.run_in_executor(None, con.receive)
         if state is None:
@@ -133,13 +130,15 @@ async def main():
     args = parser.parse_args()
 
     if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:       
         logging.basicConfig(level=logging.INFO)
 
     logging.info("Running RTDE-Bridge [WebSocket]")
     output_queue = asyncio.Queue()
 
     websocket_task = asyncio.create_task(websocket_main(args.ws_port, output_queue))
-    control_task = asyncio.create_task(control_loop_main(args.robot_ip, args.robot_port, args.config,output_queue))
+    control_task = asyncio.create_task(control_loop_main(args.robot_ip, args.robot_port, args.config, output_queue))
 
     await asyncio.gather(websocket_task, control_task)
 
