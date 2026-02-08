@@ -13,7 +13,7 @@ sys.path.append("../")
 import rtde.rtde as rtde
 import rtde.rtde_config as rtde_config
 
-shutdown = asyncio.Event()
+
 target_pos = None
 
 def rtde_state_to_dict(state):
@@ -66,7 +66,7 @@ async def websocket_handler(websocket, output_queue):
         task.cancel()
 
 
-async def websocket_main(port,output_queue):
+async def websocket_main(port,output_queue, shutdown):
     async def handler(websocket):  
         await websocket_handler(websocket, output_queue)
 
@@ -74,7 +74,7 @@ async def websocket_main(port,output_queue):
         logging.info(f"WebSocket server running on ws://0.0.0.0:{port}")
         await shutdown.wait() 
 
-async def control_loop_main(robot_host, robot_port, config_file, output_queue):
+async def control_loop_main(robot_host, robot_port, config_file, output_queue,shutdown):
     conf = rtde_config.ConfigFile(config_file)
     state_names, state_types = conf.get_recipe("state")
     setp_names, setp_types = conf.get_recipe("setp")
@@ -137,8 +137,10 @@ async def main():
     logging.info("Running RTDE-Bridge [WebSocket]")
     output_queue = asyncio.Queue()
 
-    websocket_task = asyncio.create_task(websocket_main(args.ws_port, output_queue))
-    control_task = asyncio.create_task(control_loop_main(args.robot_ip, args.robot_port, args.config, output_queue))
+    shutdown = asyncio.Event()
+
+    websocket_task = asyncio.create_task(websocket_main(args.ws_port, output_queue,shutdown))
+    control_task = asyncio.create_task(control_loop_main(args.robot_ip, args.robot_port, args.config, output_queue,shutdown))
 
     await asyncio.gather(websocket_task, control_task)
 
