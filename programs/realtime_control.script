@@ -1,0 +1,44 @@
+def realtime_control():
+  global _hidden_verificationVariable=0
+  set_gravity([0.0, 0.0, 9.82])
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  tool_wrench_limit_disable()
+  set_target_payload(0.000000, [0.000000, 0.000000, 0.000000], [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000])
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  motion_version_set(2)
+  set_safety_mode_transition_hardness(1)
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  step_count_1f0b38a3_452d_45a9_8b8e_f8b6ff1d5b8d = 0.0
+  thread Step_Counter_Thread_68e06d82_e1bb_494b_bc01_e04ed85a61a8():
+    while (True):
+      step_count_1f0b38a3_452d_45a9_8b8e_f8b6ff1d5b8d = step_count_1f0b38a3_452d_45a9_8b8e_f8b6ff1d5b8d + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_68e06d82_e1bb_494b_bc01_e04ed85a61a8()
+  while (True):
+    $ 2 "Robot Program"
+    $ 3 "Loop"
+    while (True):
+      $ 4 "new_pos≔p[read_input_float_register(0),read_input_float_register(1),read_input_float_register(2),read_input_float_register(3),read_input_float_register(4),read_input_float_register(5)]"
+      global new_pos=p[read_input_float_register(0),read_input_float_register(1),read_input_float_register(2),read_input_float_register(3),read_input_float_register(4),read_input_float_register(5)]
+      $ 5 "If new_pos != p[0,0,0,0,0,0]"
+      if (new_pos != p[0,0,0,0,0,0]):
+        $ 6 "servoj(get_inverse_kin(new_pos), t=0.008, lookahead_time=0.1, gain=300)"
+        servoj(get_inverse_kin(new_pos), t=0.008, lookahead_time=0.1, gain=300)
+      end
+      $ 7 "sync()"
+      sync()
+    end
+  end
+end

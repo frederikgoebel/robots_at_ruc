@@ -74,8 +74,8 @@ Port: 22
 ## Running the Simulator
 
 1. Install docker (or orbstack)
-2. Run command from the guide:
-```docker run --rm -it -p 5900:5900 -p 6080:6080 --name ursim universalrobots/ursim_e-series -e ROBOT_MODEL=UR5e```
+2. Run this command from the root of the project:
+```docker run --rm -it -v "./programs:/ursim/programs" -p 5900:5900 -p 6080:6080 --name ursim universalrobots/ursim_e-series -e ROBOT_MODEL=UR5e```
 3. Go to web interface, address is printed by command ```http://<IP:PORT>/vnc.html?host=<IP>&port=<PORT>```
 4. Confirm safety settings, do general setup, start the virtual robot
 5. The remote connections can be used with the simulator
@@ -98,7 +98,9 @@ The websocket will be exposed on ```0.0.0.0:8765```.
 
 An example of a p5 sketch sending position updates and reading out the force on the arm can be found in the file ```example_p5.js```.
 
-On the robot run the program ```XXX-whats the name``` to receive realtime positions and execute movements. 
+On the robot run the program ```realtime_control.urp``` to receive realtime positions and execute movements.
+If the program is not yet uploaded on the robot, use FileZilla to upload the program from the ```programs``` folder to the ```programs```folder on the robot. 
+You might want to play with the settings of the ```servoj(...)``` command. Documentation for it can be found [here](https://www.universal-robots.com/articles/ur/programming/servoj-command/).
 
 // TODO more documentation
 

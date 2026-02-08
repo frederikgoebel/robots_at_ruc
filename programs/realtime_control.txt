@@ -1,0 +1,8 @@
+ Program
+   Variables Setup
+   Robot Program
+     Loop
+       new_pos≔p[read_input_float_register(0),read_input_float_register(1),read_input_float_register(2),read_input_float_register(3),read_input_float_register(4),read_input_float_register(5)]
+       If new_pos != p[0,0,0,0,0,0]
+         servoj(get_inverse_kin(new_pos), t=0.008, lookahead_time=0.1, gain=300)
+       sync()
