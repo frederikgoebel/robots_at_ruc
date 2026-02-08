@@ -73,14 +73,12 @@ Port: 22
 
 ## Running the Simulator
 
-> [!WARNING]
-> By default the docker image does not forward all the ports of the controller. This means that the above mentioned remote connections do not currently work with the simulator. (Someone might want to figure this out)
-
 1. Install docker (or orbstack)
 2. Run command from the guide:
-```docker run --rm -it -p 5900:5900 -p 6080:6080 --name ursim universalrobots/ursim_e-series```
-3. Go to web interface, address is printed by command
-
+```docker run --rm -it -p 5900:5900 -p 6080:6080 --name ursim universalrobots/ursim_e-series -e ROBOT_MODEL=UR5e```
+3. Go to web interface, address is printed by command ```http://<IP:PORT>/vnc.html?host=<IP>&port=<PORT>```
+4. Confirm safety settings, do general setup, start the virtual robot
+5. The remote connections can be used with the simulator
 
 # Software
 

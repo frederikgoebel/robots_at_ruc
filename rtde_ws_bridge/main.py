@@ -74,6 +74,7 @@ async def websocket_main(port,output_queue, shutdown):
         logging.info(f"WebSocket server running on ws://0.0.0.0:{port}")
         await shutdown.wait() 
 
+
 async def control_loop_main(robot_host, robot_port, config_file, output_queue,shutdown):
     conf = rtde_config.ConfigFile(config_file)
     state_names, state_types = conf.get_recipe("state")
@@ -99,10 +100,14 @@ async def control_loop_main(robot_host, robot_port, config_file, output_queue,sh
         return
 
     loop = asyncio.get_running_loop()
+    last_state = None
     while True:
         state = await loop.run_in_executor(None, con.receive)
         if state is None:
             break
+        elif last_state == None or rtde_state_to_dict(state) != rtde_state_to_dict(last_state): 
+            last_state = state
+            logging.debug(f"Received state: {rtde_state_to_dict(state)}")
         
         await output_queue.put(state)  
         if target_pos is not None:
@@ -131,6 +136,7 @@ async def main():
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
+        logging.debug("Verbose mode enabled.")
     else:       
         logging.basicConfig(level=logging.INFO)
 
