@@ -43,6 +43,12 @@ The UR5e is a cobot, this means that it is more safe then a normal industrial ro
 
 ### Troubleshooting
 
+### Check that robot is started
+Make sure the robot, not just the remote, is started. 
+1. Lower left corner should be green. Otherwise tap the corner. 
+2. Tap ```On```
+3. Tap ```Start```
+
 ### Check IP
 
    1. On the robot interface click on the hamburger menu in the top right corner
