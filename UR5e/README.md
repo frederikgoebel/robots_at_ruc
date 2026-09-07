@@ -17,6 +17,20 @@ The UR5e is a cobot, this means that it is more safe then a normal industrial ro
 1. Be aware of the robot movements. Do not stand in its working envelope.
 2. Do not lean under the robot arm.
 3. Always have a line of sight to the robot when you run it.  
+4. Run programs as `Simulation` (toggle bottom right) before you run them live
+
+# Usage
+Save all your `programs` and `installations` in a directory with your RUC username, do not change `programs` or `installations` in other directories:
+
+1. `Save` -> `Save Program As...`
+2. `New folder` (icon on top left)
+3. `Long press` on folder -> `Rename`
+4. Tap on your folder to go into it
+5. Enter file name -> `Save`
+6. `Save` -> `Save Installation As...`
+7. Tap on your folder to go into it
+8. Enter installation name -> `Save`
+9. If asked: Confirm `Update program`
 
 # Documentation
 
@@ -43,20 +57,20 @@ The UR5e is a cobot, this means that it is more safe then a normal industrial ro
 
 ### Troubleshooting
 
-### Check that robot is started
+#### Check that robot is started
 Make sure the robot, not just the remote, is started. 
 1. Lower left corner should be green. Otherwise tap the corner. 
 2. Tap ```On```
 3. Tap ```Start```
 
-### Check IP
+#### Check IP
 
    1. On the robot interface click on the hamburger menu in the top right corner
    2. Click ```Info```
    3. See ```IP Address```
    4. If the IP is set and it shows ```connected```try to use that IP to ping the robot. 
 
-### Disable other networks
+#### Disable other networks
 The IP range of the router connected to the robot should not yield public IP addresses but to double check disable WIFI and other network connections.
 
 ### Dashboard Server (not actually a GUI)
@@ -68,6 +82,8 @@ Afterwards commands can be send from the running session.
 Available commands can be found [here](https://s3-eu-west-1.amazonaws.com/ur-support-site/42728/DashboardServer_e-Series_2022.pdf).
 
 ### Real Time Data Exchange (RTDE)
+
+To stream instructions to and receive information from the robot the Real Time Data Exchange can be used. Read the docs and look at the RTDE-Websocket-Bridge further down. 
 
 [Docs](https://docs.universal-robots.com/tutorials/communication-protocol-tutorials/rtde-guide.html)
 
